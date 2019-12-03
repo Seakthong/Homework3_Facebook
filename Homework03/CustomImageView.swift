@@ -29,7 +29,7 @@ class CustomImageView: UIImageView {
             let ratio = myViewWidth / myImageWidth
             let scaledHeight = myImageHeight * ratio
             print("Workd")
-            return CGSize(width: myViewWidth + 0, height: scaledHeight + 25)
+            return CGSize(width: myViewWidth + 0, height: scaledHeight + 50)
         }
         
         return CGSize(width: -1.0, height: -1.0)

@@ -23,9 +23,11 @@ struct Posting {
 class TableViewController: UITableViewController {
     var str = "KSHRD is Korea Software HRD Center. Basic course 40 students. Advacnce course 25 students."
         var data = [
-            Posting(profile: UIImage(named: "1"), name: "Seakthong Aing", place: "Now Phnom Penh", postImage: UIImage(named: "2"), status: "KSHRD is Korea Software HRD Center. Basic course 40 students. Advacnce course 25 students.", likeAmount: 10, commentAmount: 20, shareAmount: 30),
-            Posting(profile: UIImage(named: "3"), name: "You are You", place: "Now Phnom Penh", postImage: UIImage(named: "4"), status: "KSHRD is Korea Software HRD Center. Basic course 40 students. Advacnce course 25 students.", likeAmount: 1, commentAmount: 1, shareAmount: 0),
-            Posting(profile: UIImage(named: "5"), name: "Dog & Cat", place: "Now Phnom Penh", postImage: UIImage(named: "6"), status: "KSHRD is Korea Software HRD Center. Basic course 40 students. Advacnce course 25 students.", likeAmount: 0, commentAmount: 20, shareAmount: 1)
+            Posting(profile: UIImage(named: "1"), name: "ABC UC", place: "Now Phnom Penh", postImage: UIImage(named: "2"), status: "KSHRD is Korea Software HRD Center. Basic course 40 students. Advacnce course 25 students. KSHRD is Korea Software HRD Center. Basic course 40 students. Advacnce course 25 students.", likeAmount: 10, commentAmount: 20, shareAmount: 30),
+            Posting(profile: UIImage(named: "3"), name: "Sok Hok", place: "Sep 01, 2019", postImage: nil, status: "KSHRD", likeAmount: 1, commentAmount: 1, shareAmount: 0),
+            Posting(profile: UIImage(named: "4"), name: "Nita", place: "Kompot 2019", postImage: UIImage(named: "5"), status: "KSHRD is Korea Software HRD Center. Basic course 40 students. Advacnce course 25 students.", likeAmount: 0, commentAmount: 20, shareAmount: 1),
+            Posting(profile: UIImage(named: "5"), name: "Mazer", place: "Aug 10, 2019", postImage: nil, status: "Korea Software HRD Center.", likeAmount: 1, commentAmount: 1, shareAmount: 0),
+            Posting(profile: UIImage(named: "6"), name: "Kitty", place: "Jan 01, 2019", postImage: nil, status: "KSHRD is Korea Software HRD Center. Basic course 40 students. Advacnce course 25 students.", likeAmount: 0, commentAmount: 20, shareAmount: 1)
     ]
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,39 +42,74 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Bundle.main.loadNibNamed("PostImageTableViewCell", owner: self, options: nil)?.first as! PostImageTableViewCell
-        
-        cell.profileImageView.image = data[indexPath.row].profile
-        cell.smallProfileImageView.image = data[indexPath.row].profile
-        cell.userNameLabel.text = data[indexPath.row].name
-        cell.placeLabel.text = data[indexPath.row].place
-        cell.statusLabel.text = data[indexPath.row].status
-        cell.postImageView.image = data[indexPath.row].postImage
-        let like = data[indexPath.row].likeAmount
-        let comment = data[indexPath.row].commentAmount
-        let share = data[indexPath.row].shareAmount
-        if ( like == 0){
-            cell.emojiImageView.isHidden = true
-            cell.likeAmountLabel.isHidden = true
+        if (data[indexPath.row].postImage == nil){
+            let cell = Bundle.main.loadNibNamed("PostStatusTableViewCell", owner: self, options: nil)?.first as! PostStatusTableViewCell
+                cell.profileImageView.image = data[indexPath.row].profile
+                cell.smallProfileImageView.image = data[indexPath.row].profile
+            cell.usernameLabel.text = data[indexPath.row].name
+                cell.placeLabel.text = data[indexPath.row].place
+                cell.statusLabel.text = data[indexPath.row].status
+                let like = data[indexPath.row].likeAmount
+                let comment = data[indexPath.row].commentAmount
+                let share = data[indexPath.row].shareAmount
+                if ( like == 0){
+                    cell.reactionImageView.isHidden = true
+                    cell.likeLabel.isHidden = true
+                }
+                else{
+                    cell.likeLabel.text = "\(like!) \(like==1 ? "Like":"Likes")"
+                }
+                if (comment == 0 && share == 0){
+                    cell.commentShareLabel.isHidden = true
+                }
+                else{
+                    if(comment == 0){
+                        cell.commentShareLabel.text = "\(share!) \(share==1 ? "Share":"Shares")"
+                    }
+                    else if (share == 0){
+                        cell.commentShareLabel.text = "\(comment!) \(comment==1 ? "Comment":"Comments")"
+                    }
+                    else{
+                        cell.commentShareLabel.text = "\(comment!) \(comment==1 ? "Comment":"Comments") & \(share!) \(share==1 ? "Share":"Shares")"
+                    }
+                }
+            return cell
         }
-        else{
-            cell.likeAmountLabel.text = "\(like!) \(like==1 ? "Like":"Likes")"
-        }
-        if (comment == 0 && share == 0){
-            cell.commentShareLabel.isHidden = true
-        }
-        else{
-            if(comment == 0){
-                cell.commentShareLabel.text = "\(share!) \(share==1 ? "Share":"Shares")"
-            }
-            else if (share == 0){
-                cell.commentShareLabel.text = "\(comment!) \(comment==1 ? "Comment":"Comments")"
+        else {
+            let cell = Bundle.main.loadNibNamed("PostImageTableViewCell", owner: self, options: nil)?.first as! PostImageTableViewCell
+            
+            cell.profileImageView.image = data[indexPath.row].profile
+            cell.smallProfileImageView.image = data[indexPath.row].profile
+            cell.userNameLabel.text = data[indexPath.row].name
+            cell.placeLabel.text = data[indexPath.row].place
+            cell.statusLabel.text = data[indexPath.row].status
+            cell.postImageView.image = data[indexPath.row].postImage
+            let like = data[indexPath.row].likeAmount
+            let comment = data[indexPath.row].commentAmount
+            let share = data[indexPath.row].shareAmount
+            if ( like == 0){
+                cell.emojiImageView.isHidden = true
+                cell.likeAmountLabel.isHidden = true
             }
             else{
-                cell.commentShareLabel.text = "\(comment!) \(comment==1 ? "Comment":"Comments") & \(share!) \(share==1 ? "Share":"Shares")"
+                cell.likeAmountLabel.text = "\(like!) \(like==1 ? "Like":"Likes")"
             }
+            if (comment == 0 && share == 0){
+                cell.commentShareLabel.isHidden = true
+            }
+            else{
+                if(comment == 0){
+                    cell.commentShareLabel.text = "\(share!) \(share==1 ? "Share":"Shares")"
+                }
+                else if (share == 0){
+                    cell.commentShareLabel.text = "\(comment!) \(comment==1 ? "Comment":"Comments")"
+                }
+                else{
+                    cell.commentShareLabel.text = "\(comment!) \(comment==1 ? "Comment":"Comments") & \(share!) \(share==1 ? "Share":"Shares")"
+                }
+            }
+            return cell
         }
-        return cell
     }
 
     /*
